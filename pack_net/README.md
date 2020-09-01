@@ -30,4 +30,5 @@
 (current folder)> python LG_RL.py
 ```
 
+## Pack net structure
 ![pack net structure, (a) local pnet, (b)global pnet, (c)local+global pnet](./source/pnet.png)
