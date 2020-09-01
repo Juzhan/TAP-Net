@@ -3,10 +3,10 @@ python trainer.py \
     --seed=12345 \
     \
     --task=generate \
-    --valid_size=300 \
-    --train_size=10 \
+    --valid_size=10000 \
+    --train_size=64000 \
     --epoch_num=1 \
-    --dataset=PPSG \
+    --dataset=RAND \
     \
     --nodes=10 \
     \
@@ -20,8 +20,8 @@ python trainer.py \
     --unit=1 \
     --arm_size=1 \
     --min_size=1 \
-    --max_size=50 \
-    --container_width=50 \
-    --container_height=500 \
-    --initial_container_width=70 \
-    --initial_container_height=500
+    --max_size=5 \
+    --container_width=5 \
+    --container_height=50 \
+    --initial_container_width=7 \
+    --initial_container_height=50

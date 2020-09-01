@@ -38,13 +38,11 @@ def create_dataset_gt(blocks_num, train_size, valid_size, obj_dim, target_contai
     if not os.path.exists(valid_dir):
         os.mkdir(valid_dir)
 
-    # random_distribution = None
-    # if initial_container_width < -1:
-    random_distribution = generate.generate_height_prob(obj_dim, blocks_num, 7, target_container_width)
-    prob, key = random_distribution
-    # random_distribution = None
+    init_container_width = 7
+    init_container_size = (init_container_width, 50)
 
-    # print(prob, key)
+    random_distribution = generate.generate_height_prob(obj_dim, blocks_num, size_range, init_container_width, target_container_width)
+    prob, key = random_distribution
 
     def generate_data(data_dir, data_size):
 
@@ -53,11 +51,8 @@ def create_dataset_gt(blocks_num, train_size, valid_size, obj_dim, target_contai
         
 
         for _ in tqdm(range(data_size)):
-            # if random_distribution is not None:
-            #     target_container_size[-1] = np.random.choice( key, p=prob )
-            # target_container_size[-1] = np.random.randint(15, 18)
-            # target_container_size[-1] = np.random.randint(18, 30)
-            gt_blocks, gt_positions = generate.generate_blocks_GT(blocks_num, target_container_size, size_range, key, prob)
+            # gt_blocks, gt_positions = generate.generate_blocks_with_GT(blocks_num, target_container_size, init_container_size, 1, size_range, 'bot', key, prob)
+            gt_blocks, gt_positions = generate.generate_blocks_with_GT(blocks_num, target_container_size, init_container_size, 1, size_range, 'bot', 0, True )
 
 
             gt_pos_f.writelines(arr2str( gt_positions ) )
@@ -116,7 +111,7 @@ def create_dataset_rand(blocks_num, train_size, valid_size, obj_dim, target_cont
 
         for _ in tqdm(range(data_size)):
             gt_blocks = np.random.randint( size_min, size_max, (blocks_num * obj_dim) )
-            gt_positions = np.random.zeros( size_min, size_max, (blocks_num * obj_dim) )
+            gt_positions = np.random.randint( size_min, size_max, (blocks_num * obj_dim) )
 
 
             gt_pos_f.writelines(arr2str( gt_positions ) )
@@ -135,16 +130,20 @@ def create_dataset_rand(blocks_num, train_size, valid_size, obj_dim, target_cont
 
 
 if __name__ == "__main__":
+
     obj_dim = 2
     
     blocks_num = 10
     target_container_width = 5
-    target_container_height = 20 # 随便
+    target_container_height = 20 # whatever
 
     size_range = [1, 5]
 
     train_size = 64000
     valid_size = 10000
     
+    # generate gt dataset
     # create_dataset_gt(blocks_num, train_size, valid_size, obj_dim, target_container_width, target_container_height, size_range)
+
+    # generate random dataset
     create_dataset_rand(blocks_num, train_size, valid_size, obj_dim, target_container_width, target_container_height, size_range)

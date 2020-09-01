@@ -500,9 +500,9 @@ def create_dataset_gt(blocks_num, train_size, valid_size, obj_dim, target_contai
         return train_dir, valid_dir
     
     if not os.path.exists(train_dir):
-        os.mkdir(train_dir)
+        os.makedirs(train_dir)
     if not os.path.exists(valid_dir):
-        os.mkdir(valid_dir)
+        os.makedirs(valid_dir)
 
     # random_distribution = None
     # if initial_container_width < -1:
@@ -603,9 +603,9 @@ def create_dataset( blocks_num, train_size, valid_size, obj_dim, initial_contain
         return train_dir, valid_dir
     
     if not os.path.exists(train_dir):
-        os.mkdir(train_dir)
+        os.makedirs(train_dir)
     if not os.path.exists(valid_dir):
-        os.mkdir(valid_dir)
+        os.makedirs(valid_dir)
 
 
     random_distribution = None

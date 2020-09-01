@@ -3365,7 +3365,7 @@ class DQN(nn.Module):
         # return self.head(output.view(output.size(0), -1))
         return F.softmax(self.head(output.view(output.size(0), -1)), dim=1)
 
-from pack_net import RL_RNN, RL_RNN2
+from pack_net import LG_RL
 
 def calc_one_position_net(blocks, block_index, positions, container, reward_type, stable, 
                         heightmap, valid_size, empty_size, level_free_space=None, net=None ):
@@ -3407,13 +3407,12 @@ def calc_one_position_net(blocks, block_index, positions, container, reward_type
     tensor_block = torch.from_numpy( block.astype('float32')[None, None, :] ).cuda()
 
     if net is None:
-        
         if reward_type == 'C+P+S-SL-soft':
             net = DQN(container_width, True).cuda().eval()
-            net.load_state_dict(torch.load('./pack_net/DL_mcs_diff_False/checkpoints/199/DL.pt'))
+            net.load_state_dict(torch.load('./pack_net/L_SL_mcs_diff_False/checkpoints/199/DL.pt'))
         elif reward_type == 'C+P+S-RL-soft':
             net = DQN(container_width, True).cuda().eval()
-            checkpoint = torch.load('./pack_net/RL_rand_diff/checkpoints/149/actor.pt')
+            checkpoint = torch.load('./pack_net/L_RL_rand_diff/checkpoints/199/actor.pt')
             net.load_state_dict(checkpoint)
 
 
@@ -3460,7 +3459,7 @@ def calc_one_position_net(blocks, block_index, positions, container, reward_type
 
     return positions, container, stable, heightmap, valid_size, empty_size, level_free_space
 
-def calc_positions_RNN_net(blocks, container_size, reward_type):
+def calc_positions_LG_net(blocks, container_size, reward_type):
     '''
     calculate the positions
     ---
@@ -3489,73 +3488,19 @@ def calc_positions_RNN_net(blocks, container_size, reward_type):
     container_width, container_height = container_size
     tensor_block = torch.from_numpy( blocks.astype('float32')[None, :, :] ).transpose(2,1).cuda()
     
-    if reward_type == 'C+P+S-G-soft':
-        net = RL_RNN.PackRNN(2, 128, container_width, 128, container_width, container_height, 'diff').cuda().eval()
-        net.load_state_dict(torch.load('./pack_net/RL_RNN_rand_diff_12800_keep3/checkpoints/199/actor.pt'))
+    if reward_type == 'C+P+S-G-soft' or reward_type == 'C+P+S-G-gt-soft':
+        net = LG_RL.PackRNN(2, 128, container_width, 128, container_width, container_height, 'diff', pack_net_type='G').cuda().eval()
+        net.load_state_dict(torch.load('./pack_net/G_rand_diff/checkpoints/199/actor.pt'))
         # net.load_state_dict(torch.load('./pack/10/2d-bot-C+P+S-G-soft-width-5-diff-pre_eval-note-sh-R-2020-05-16-23-18/checkpoints/85/actor_pnet.pt'))
-        # net.load_state_dict(checkpoint)
-        ratio, positions, box_size, valid_size, box_size, empty_size, stable_num, packing_height, containers, stables = RL_RNN.calc_positions(net, tensor_block, container_size, False)
+        ratio, positions, box_size, valid_size, box_size, empty_size, stable_num, packing_height, containers, stables = LG_RL.calc_positions(net, tensor_block, container_size, False)
 
-    elif reward_type == 'C+P+S-LG-soft':
-        net = RL_RNN2.PackRNN(2, 128, container_width, 128, container_width, container_height, 'diff').cuda().eval()
-        net.load_state_dict(torch.load('./pack_net/RL_RNN2_rand_diff_12800/checkpoints/149/actor.pt'))
-
+    elif reward_type == 'C+P+S-LG-soft' or reward_type == 'C+P+S-LG-gt-soft':
+        net = LG_RL.PackRNN(2, 128, container_width, 128, container_width, container_height, 'diff', pack_net_type='LG').cuda().eval()
+        net.load_state_dict(torch.load('./pack_net/LG_rand_diff/checkpoints/199/actor.pt'))
+        ratio, positions, box_size, valid_size, box_size, empty_size, stable_num, packing_height, containers, stables = LG_RL.calc_positions(net, tensor_block, container_size, False)
     
-    # elif reward_type == 'C+P+S-G-gt-soft':
-    #     net.load_state_dict(torch.load('./pack_net/RL_RNN_gt_diff/checkpoints/149/actor.pt'))
-    
-        ratio, positions, box_size, valid_size, box_size, empty_size, stable_num, packing_height, containers, stables = RL_RNN2.calc_positions(net, tensor_block, container_size, False)
-    
-    # return ratio, valid_size, box_size, empty_size, stable_num
     scores = [valid_size, box_size, empty_size, stable_num, packing_height]
     return positions[0], containers[0], stables[0], ratio, scores
-
-def calc_positions_RNN2_net(blocks, container_size, reward_type):
-    '''
-    calculate the positions
-    ---
-    params:
-    ---
-        blocks: n x ? array, blocks with some order
-        container_size: 1 x ? array, size of the container
-        reward_type: string
-            'C+P+S-SL-soft'
-            'C+P+S-RL-soft'
-            'C+P+S-LG-soft'
-            'C+P+S-LG-gt-soft'
-    return:
-    ---
-        positions: n x ? array, positions of blocks
-        container: a ?-dimension array, final state of container
-        place: n x 1 bool list, the blocks' placed state
-        ratio: float, C / C*S1 / C*S2 / C+P / (C+P)*S1 / (C+P)*S2, the ratio calculated by the following 4 scores
-        scores: 4 float numbers: valid-size, box-size, empty-size, stable-num and packing_height
-    '''
-    # Initialize at the first block
-    blocks = blocks.astype('int')
-    blocks_num = len(blocks)
-    block_dim = len(blocks[0])
-    
-    container_width, container_height = container_size
-    
-    net = RL_RNN2.PackRNN(2, 128, container_width, 128, container_width, container_height, 'diff').cuda().eval()
-
-    if reward_type == 'C+P+S-LG-soft':
-        net.load_state_dict(torch.load('./pack_net/RL_RNN2_rand_diff_12800/checkpoints/149/actor.pt'))
-        # net.load_state_dict(torch.load('./pack/10/2d-bot-C+P+S-LG-soft-width-5-diff-pre_train-note-sh-R-RNN2-2020-05-12-14-1/checkpoints/170/actor_pnet.pt'))
-    #     net.load_state_dict(checkpoint)
-
-    
-    # elif reward_type == 'C+P+S-LG-gt-soft':
-    #     net.load_state_dict(torch.load('./pack_net/RL_RNN_gt_diff/checkpoints/149/actor.pt'))
-    
-    tensor_block = torch.from_numpy( blocks.astype('float32')[None, :, :] ).transpose(2,1).cuda()
-    ratio, positions, box_size, valid_size, box_size, empty_size, stable_num, packing_height, containers, stables = RL_RNN2.calc_positions(net, tensor_block, container_size, False)
-    
-    # return ratio, valid_size, box_size, empty_size, stable_num
-    scores = [valid_size, box_size, empty_size, stable_num, packing_height]
-    return positions[0], containers[0], stables[0], ratio, scores
-
 
 
 def calc_positions_net(blocks, container_size, reward_type):
@@ -3580,10 +3525,10 @@ def calc_positions_net(blocks, container_size, reward_type):
         scores: 4 float numbers: valid-size, box-size, empty-size, stable-num and packing_height
     '''
     # Initialize at the first block
-    # return calc_positions_RNN2_net(blocks, container_size, reward_type)
+    # return calc_positions_LG_net(blocks, container_size, reward_type)
     if reward_type == 'C+P+S-LG-soft' or reward_type == 'C+P+S-LG-gt-soft' or \
     reward_type == 'C+P+S-G-soft' or reward_type == 'C+P+S-G-gt-soft':
-        return calc_positions_RNN_net(blocks, container_size, reward_type)
+        return calc_positions_LG_net(blocks, container_size, reward_type)
     
     blocks = blocks.astype('int')
     blocks_num = len(blocks)
@@ -3603,7 +3548,7 @@ def calc_positions_net(blocks, container_size, reward_type):
         
     elif reward_type == 'C+P+S-RL-soft':
         net = DQN(container_size[0], True).cuda().eval()
-        checkpoint = torch.load('./pack_net/RL_rand_diff/checkpoints/149/actor.pt')
+        checkpoint = torch.load('./pack_net/RL_rand_diff/checkpoints/199/actor.pt')
         net.load_state_dict(checkpoint)
 
         
@@ -3748,13 +3693,9 @@ class Container(object):
                 positions, container, stable, heightmap, valid_size, empty_size, level_free_space = calc_one_position_net(
                     blocks, self.current_blocks_num, self.positions, self.container, self.reward_type,
                     self.stable, self.heightmap, self.valid_size, self.empty_size ) #, self.level_free_space self.net )
-        elif self.reward_type == 'C+P+S-LG-soft'  or self.reward_type == 'C+P+S-LG-gt-soft':
-            positions, container, stable, _, score = calc_positions_RNN2_net(
-                blocks, self.container_size, self.reward_type )
-            valid_size, _, empty_size, _, heightmap = score
-            level_free_space = self.level_free_space
-        elif self.reward_type == 'C+P+S-G-soft'  or self.reward_type == 'C+P+S-G-gt-soft':
-            positions, container, stable, _, score = calc_positions_RNN_net(
+        elif self.reward_type == 'C+P+S-LG-soft'  or self.reward_type == 'C+P+S-LG-gt-soft' or \
+             self.reward_type == 'C+P+S-G-soft'  or self.reward_type == 'C+P+S-G-gt-soft':
+            positions, container, stable, _, score = calc_positions_LG_net(
                 blocks, self.container_size, self.reward_type )
             valid_size, _, empty_size, _, heightmap = score
             level_free_space = self.level_free_space

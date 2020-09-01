@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import tools
 import math
 import numpy as np
-from pack_net import RL_RNN, RL_RNN2
+from pack_net import LG_RL
 
 class Encoder(nn.Module):
     """Encodes the static & dynamic states using 1d Convolution."""
@@ -641,9 +641,9 @@ class DRL_RNN(nn.Module):
         self.packing_strategy = packing_strategy
 
         if self.reward_type == 'C+P+S-G-soft':
-            self.pack_net = RL_RNN.PackRNN(2, 128, container_width, 128, container_width, container_height, heightmap_type)
+            self.pack_net = LG_RL.PackRNN(2, 128, container_width, 128, container_width, container_height, heightmap_type, pack_net_type='G')
             if packing_strategy[:3] == 'pre':
-                self.pack_net.load_state_dict(torch.load('./pack_net/RL_RNN_rand_diff_12800_keep3/checkpoints/199/actor.pt'))
+                self.pack_net.load_state_dict(torch.load('./pack_net/G_rand_diff/checkpoints/199/actor.pt'))
                 print('pre')
             if packing_strategy[-4:] == 'eval':
                 print('eval')
@@ -652,10 +652,10 @@ class DRL_RNN(nn.Module):
                 print('train')
             
         elif self.reward_type == 'C+P+S-LG-soft':
-            self.pack_net = RL_RNN2.PackRNN(2, 128, container_width, 128, container_width, container_height, heightmap_type)
+            self.pack_net = LG_RL.PackRNN(2, 128, container_width, 128, container_width, container_height, heightmap_type, pack_net_type='LG')
             print('LG')
             if packing_strategy[:3] == 'pre':
-                self.pack_net.load_state_dict(torch.load('./pack_net/RL_RNN2_rand_diff_12800/checkpoints/149/actor.pt'))
+                self.pack_net.load_state_dict(torch.load('./pack_net/LG_rand_diff/checkpoints/199/actor.pt'))
                 print('pre')
             if packing_strategy[-4:] == 'eval':
                 self.pack_net.eval()
@@ -989,21 +989,21 @@ class DRL_L(nn.Module):
             if heightmap_type == 'diff':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=True)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_diff/checkpoints/149/actor.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_diff/checkpoints/199/actor.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
             elif heightmap_type == 'normal':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=False)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_normal/checkpoints/149/actor.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_normal/checkpoints/199/actor.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
             elif heightmap_type == 'zero':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=False)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_zero/checkpoints/149/actor.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_zero/checkpoints/199/actor.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
