@@ -1,4 +1,5 @@
 # Pack net
+![pack net structure, (a) local pnet, (b)global pnet, (c)local+global pnet](./image/pnet.png)
 
 ## File structure:
     
