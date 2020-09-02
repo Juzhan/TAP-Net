@@ -122,7 +122,6 @@ All codes are tested under PyTorch 1.1.0 and Python 3.7 on Ubuntu 18.04 and Wind
         "C+P+S-SL-soft" : When packing strategy is pnet, use local pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
         "C+P+S-G-soft"  : When packing strategy is pnet, use global pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
         "C+P+S-LG-soft" : When packing strategy is pnet, use local+global pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
-        "C+P+S-LG-hard" : When packing strategy is pnet, use local+global pnet, use stablilty as hard constrain, use (C+P+S)/3 as reward
 
     ========= Network setting =========
     --input_type: string, the data type you want to use, default as 'bot'
