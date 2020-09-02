@@ -145,8 +145,8 @@ All codes are tested under PyTorch 1.1.0 and Python 3.7 on Ubuntu 18.04 and Wind
         "full"  : Use raw heightmap
     --allow_rot: bool, True if you allow block to rotate
 
-    --encoder_hidden: the features dimension of the static elements of encoder
-    --decoder_hidden: the features dimension of the dynamic elements of decoder
+    --encoder_hidden: int, the features dimension of the static elements of encoder
+    --decoder_hidden: int, the features dimension of the dynamic elements of decoder
     --actor_lr: float, learning rate of actor
     --critic_lr: float, learning rate of critic
 
