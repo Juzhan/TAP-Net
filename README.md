@@ -213,7 +213,7 @@ The `data/` folder contain the training and testing data, the folder structure o
                 dep_small.txt   <--- rotation dependency (right/backward)
                 container.txt   <--- only use in multi-target container task, just some random generated target container id for blocks
 
-Under these folders, we have many kinds for dataset, `pack-train-10-1280-7-1-5` means the training dataset with 1280 data, each data has 10 blocks, the initial container width is 7, the block size is from 1~5. `pack-valid-6-100-5-1-4` means the testing dataset with 100 data, each data has 6 blocks, the initial container width is 5, the block size is from 1~4.
+Under these folders, we have many kinds for dataset, `pack-train-10-1280-7-1-5` means the training dataset with 1280 data, each data has 10 blocks, the initial container width is 7, the block size is from 1\~5. `pack-valid-6-100-5-1-4` means the testing dataset with 100 data, each data has 6 blocks, the initial container width is 5, the block size is from 1\~4.
 
 ## License
 Our code is released under MIT License. See LICENSE file for details.

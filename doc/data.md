@@ -20,7 +20,7 @@ Each dataset will generate under these main folder, for example:
         * dep_large.txt     : The right / backward access block states of each block
         * container.txt     : The target container id of each block (only use for multi-container case)
         
-Under these folders, we have many kinds for dataset, `pack-train-10-1280-7-1-5` means the training dataset with 1280 data, each data has 10 blocks, the initial container width is 7, the block size is from 1~5. `pack-valid-6-100-5-1-4` means the testing dataset with 100 data, each data has 6 blocks, the initial container width is 5, the block size is from 1~4.
+Under these folders, we have many kinds for dataset, `pack-train-10-1280-7-1-5` means the training dataset with 1280 data, each data has 10 blocks, the initial container width is 7, the block size is from 1\~5. `pack-valid-6-100-5-1-4` means the testing dataset with 100 data, each data has 6 blocks, the initial container width is 5, the block size is from 1\~4.
 
 ## Data structure:
 
