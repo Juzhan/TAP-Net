@@ -11,6 +11,8 @@ Given an initial spatial configuration of boxes, we seek an efficient method to 
 
 For more details, please refer to our [paper]().
 
+![network](./doc/network.png)
+
 ### Usage
 
 ### File structure:
