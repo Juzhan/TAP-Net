@@ -57,7 +57,7 @@ Take the data shows in the figure as example, we want to generate 2 groups of da
 
     * For data 1, we have 3 blocks with size: [3,2],[1,1],[1,2]
     * For data 2, we have 3 blocks with size: [1,2],[2,3],[1,2]
-    * The block.txt should looks like:
+    * The block.txt will be:
     ```
     3 2 1 1 1 2  #  data 1 original state
     2 3 1 1 2 1  #  data 1 rotated by Z axis
@@ -68,7 +68,7 @@ Take the data shows in the figure as example, we want to generate 2 groups of da
 
     * For data 1, we have 3 positons of each block: [0,0],[3,0],[3,1]
     * For data 2, we have 3 positons of each block: [0,0],[1,0],[3,0]
-    * The pos.txt should looks like:
+    * The pos.txt will be:
     ```
     0 0 3 0 3 1  #  data 1 block positions
     0 0 1 0 3 0  #  data 2 block positions
@@ -78,8 +78,8 @@ Take the data shows in the figure as example, we want to generate 2 groups of da
     * For data 1, we can generate the 2D top block array, denote the array as **B**, B[i][j] means block j is blocked by block i:
         ```
         0 0 0
-        0 0 1
         0 0 0
+        0 1 0
         ```
     * For data 2, we can generate the 2D top block array, denote the array as **B**, B[i][j] means block j is blocked by block i:
         ```
@@ -87,9 +87,9 @@ Take the data shows in the figure as example, we want to generate 2 groups of da
         0 0 0
         0 0 0
         ```
-    * The dep_move.txt should looks like:
+    * The dep_move.txt will be:
     ```
-    0 0 0 0 1 0 0 0 0  #  data 1 top block array (after flattened)
+    0 0 0 0 0 0 0 1 0  #  data 1 top block array (after flattened)
     0 0 0 0 0 0 0 0 0  #  data 2 top block array (after flattened)
     ```
 * **dep_small.txt**
@@ -106,7 +106,7 @@ Take the data shows in the figure as example, we want to generate 2 groups of da
         0 0 1
         0 0 0
         ```
-    * The dep_small.txt should looks like:
+    * The dep_small.txt will be:
     ```
     0 0 0 0 0 0 0 0 0  #  data 1 block array (after flattened) of rotation state 1, since rotation state 1 (original state) doesn't need to grasp from left size of block, we don't need to consider about its left block state
     1 1 1 0 0 0 0 0 0  #  data 1 left block array (after flattened) of rotation state 2
@@ -127,7 +127,7 @@ Take the data shows in the figure as example, we want to generate 2 groups of da
         1 0 0
         0 1 1
         ```
-    * The dep_large.txt should looks like:
+    * The dep_large.txt will be:
     ```
     0 0 0 0 0 0 0 0 0  #  data 1 block array (after flattened) of rotation state 1, since rotation state 1 (original state) doesn't need to grasp from right size of block, we don't need to consider about its right block state
     0 0 0 1 1 0 1 0 1  #  data 1 right block array (after flattened) of rotation state 2
