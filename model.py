@@ -145,12 +145,8 @@ class DRL(nn.Module):
     ----------
     static_size: int
         Defines how many features are in the static elements of the model
-        (e.g. 2 for (x, y) coordinates)
     dynamic_size: int > 1
         Defines how many features are in the dynamic elements of the model
-        (e.g. 2 for the VRP which has (load, demand) attributes. The TSP doesn't
-        have dynamic elements, but to ensure compatility with other optimization
-        problems, assume we just pass in a vector of zeros.
     hidden_size: int
         Defines the number of units in the hidden layer for all static, dynamic,
         and decoder output units.
@@ -531,12 +527,8 @@ class DRL_RNN(nn.Module):
     ----------
     static_size: int
         Defines how many features are in the static elements of the model
-        (e.g. 2 for (x, y) coordinates)
     dynamic_size: int > 1
         Defines how many features are in the dynamic elements of the model
-        (e.g. 2 for the VRP which has (load, demand) attributes. The TSP doesn't
-        have dynamic elements, but to ensure compatility with other optimization
-        problems, assume we just pass in a vector of zeros.
     hidden_size: int
         Defines the number of units in the hidden layer for all static, dynamic,
         and decoder output units.
@@ -877,12 +869,8 @@ class DRL_L(nn.Module):
     ----------
     static_size: int
         Defines how many features are in the static elements of the model
-        (e.g. 2 for (x, y) coordinates)
     dynamic_size: int > 1
         Defines how many features are in the dynamic elements of the model
-        (e.g. 2 for the VRP which has (load, demand) attributes. The TSP doesn't
-        have dynamic elements, but to ensure compatility with other optimization
-        problems, assume we just pass in a vector of zeros.
     hidden_size: int
         Defines the number of units in the hidden layer for all static, dynamic,
         and decoder output units.
@@ -993,10 +981,10 @@ class DRL_L(nn.Module):
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
-            elif heightmap_type == 'normal':
+            elif heightmap_type == 'full':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=False)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_normal/checkpoints/199/actor.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/RL_rand_full/checkpoints/199/actor.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
@@ -1015,26 +1003,26 @@ class DRL_L(nn.Module):
             if heightmap_type == 'diff':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=True)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/DL_rand_mcs_diff_True/checkpoints/199/DL.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/SL_rand_diff/checkpoints/199/SL.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
-            elif heightmap_type == 'normal':
+            elif heightmap_type == 'full':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=False)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/DL_mcs_normal_False/checkpoints/199/DL.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/SL_rand_full/checkpoints/199/SL.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
             elif heightmap_type == 'zero':
                 self.pack_net = tools.DQN(self.container_width, is_diff_height=False)
                 if packing_strategy[:3] == 'pre':
-                    self.pack_net.load_state_dict(torch.load('./pack_net/DL_mcs_zero_False/checkpoints/199/DL.pt'))
+                    self.pack_net.load_state_dict(torch.load('./pack_net/SL_rand_zero/checkpoints/199/SL.pt'))
                 if packing_strategy[-4:] == 'eval':
                     print('eval')
                     self.pack_net.eval()
             else:
-                print('=====> Error in DRL_one_step init pack')
+                print('=====> Error in DRL_L init pack')
 
     def forward(self, static, dynamic, decoder_input, last_hh=None):
         """

@@ -3612,9 +3612,9 @@ class Container(object):
 
         self.reward_type = reward_type
 
-        if reward_type == 'C+P+S-mul-soft':
+        if reward_type == 'C+P+S-mul-soft' or reward_type == 'C+P+S-mul-hard':
             packing_strategy = 'MUL'
-        elif reward_type == 'C+P+S-mcs-soft':
+        elif reward_type == 'C+P+S-mcs-soft' or reward_type == 'C+P+S-mcs-hard':
             packing_strategy = 'MACS'
         
         self.block_dim = len(container_size)
@@ -3686,14 +3686,13 @@ class Container(object):
             container, positions, stable, heightmap, valid_size, empty_size = calc_one_position_lb_greedy(
                 block.astype(int), self.current_blocks_num, self.container_size, self.reward_type, 
                 self.container, self.positions, self.stable, self.heightmap, self.valid_size, self.empty_size)
-        
         # p-net
         elif self.reward_type == 'C+P+S-SL-soft' or self.reward_type == 'C+P+S-RL-soft':
                 positions, container, stable, heightmap, valid_size, empty_size, level_free_space = calc_one_position_net(
                     blocks, self.current_blocks_num, self.positions, self.container, self.reward_type,
                     self.stable, self.heightmap, self.valid_size, self.empty_size ) #, self.level_free_space self.net )
         elif self.reward_type == 'C+P+S-LG-soft'  or self.reward_type == 'C+P+S-LG-gt-soft' or \
-             self.reward_type == 'C+P+S-G-soft'  or self.reward_type == 'C+P+S-G-gt-soft':
+            self.reward_type == 'C+P+S-G-soft'  or self.reward_type == 'C+P+S-G-gt-soft':
             positions, container, stable, _, score = calc_positions_LG_net(
                 blocks, self.container_size, self.reward_type )
             valid_size, _, empty_size, _, heightmap = score

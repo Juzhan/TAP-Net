@@ -524,8 +524,8 @@ if __name__ == '__main__':
 
     # Data settings
     parser.add_argument('--obj_dim', default=2, type=int)
-    parser.add_argument('--nodes', dest='num_nodes', default=6, type=int)
-    parser.add_argument('--total_obj_num', default=10, type=int)            # if more, do Rolling, todo
+    parser.add_argument('--nodes', dest='num_nodes', default=10, type=int)
+    parser.add_argument('--total_obj_num', default=10, type=int)            # if more, do Rolling, TODO
     parser.add_argument('--dataset', default='RAND', type=str)              # RAND, PPSG, MIX
     # sizes of blocks and containers
     parser.add_argument('--unit', default=1.0, type=float)
@@ -533,10 +533,10 @@ if __name__ == '__main__':
     parser.add_argument('--min_size', default=1, type=int)
     parser.add_argument('--max_size', default=5, type=int)
     parser.add_argument('--container_width', default=5, type=int)
-    parser.add_argument('--container_length', default=5, type=int)  # for 3D, todo
+    parser.add_argument('--container_length', default=5, type=int)  # for 3D, TODO
     parser.add_argument('--container_height', default=50, type=int)
     parser.add_argument('--initial_container_width', default=7, type=int)
-    parser.add_argument('--initial_container_length', default=7, type=int)  # for 3D, todo
+    parser.add_argument('--initial_container_length', default=7, type=int)  # for 3D, TODO
     parser.add_argument('--initial_container_height', default=50, type=int)
 
     # Packing settings

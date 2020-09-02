@@ -496,7 +496,7 @@ class PackEngine:
         return state, reward, done, pos
 
     def get_heightap(self, heightmap_type):
-        if heightmap_type == 'normal':
+        if heightmap_type == 'full':
             hm = self.height_map
         elif heightmap_type == 'zero':
             hm = self.height_map - np.min(self.height_map)
@@ -960,7 +960,7 @@ if __name__ == '__main__':
     note = 'G_rand'
     pack_net_type = note.split('_')[0]
 
-    heightmap_type = 'diff'
+    heightmap_type = 'diff'  # diff   zero   full
 
     save_dir = './%s_%s' % (note, heightmap_type)
     print(save_dir)
