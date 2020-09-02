@@ -12,9 +12,9 @@ Given an initial spatial configuration of boxes, we seek an efficient method to 
 For more details, please refer to our [paper]().
 
 <!-- ![network](./doc/network.png) {width: 50%} -->
-<center>
+<div align=center>
 <img src="./doc/network.png" width="60%">
-</center>
+</div>
 
 
 ### Usage
