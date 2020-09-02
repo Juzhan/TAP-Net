@@ -119,11 +119,8 @@ All codes are tested under PyTorch 1.1.0 and Python 3.7 on Ubuntu 18.04 and Wind
         "C+P+S-mul-hard": Use stablilty as hard constrain, use (C+P+S)/3 as reward
         # pack net strategy
         "C+P+S-RL-soft" : When packing strategy is pnet, use local pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
-        "C+P+S-RL-hard" : When packing strategy is pnet, use local pnet, use stablilty as hard constrain, use (C+P+S)/3 as reward
         "C+P+S-SL-soft" : When packing strategy is pnet, use local pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
-        "C+P+S-SL-hard" : When packing strategy is pnet, use local pnet, use stablilty as hard constrain, use (C+P+S)/3 as reward
         "C+P+S-G-soft"  : When packing strategy is pnet, use global pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
-        "C+P+S-G-hard"  : When packing strategy is pnet, use global pnet, use stablilty as hard constrain, use (C+P+S)/3 as reward
         "C+P+S-LG-soft" : When packing strategy is pnet, use local+global pnet, use stablilty as soft constrain, use (C+P+S)/3 as reward
         "C+P+S-LG-hard" : When packing strategy is pnet, use local+global pnet, use stablilty as hard constrain, use (C+P+S)/3 as reward
 
@@ -224,4 +221,4 @@ Please cite the paper in your publications if it helps your research:
 ``` -->
 
 ## Acknowledgements
-Thanks to [mveres01/pytorch-drl4vrp](https://github.com/mveres01/pytorch-drl4vrp) for getting the idea of restructuring the code.
+Thanks to [mveres01/pytorch-drl4vrp](https://github.com/mveres01/pytorch-drl4vrp) for getting the start of our code.

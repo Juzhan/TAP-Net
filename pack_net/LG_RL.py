@@ -563,7 +563,6 @@ class PackRNN(nn.Module):
 
     def __init__(self, block_input_size, block_hidden_size, height_input_size, height_hidden_size, container_width, container_height, heightmap_type, max_blocks_num=10, pack_net_type='LG'):
         super(PackRNN, self).__init__()        
-        print(pack_net_type)
         if pack_net_type == 'LG':
             # local + global
             decoder_hidden_size = block_hidden_size + block_hidden_size + height_hidden_size

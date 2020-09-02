@@ -34,5 +34,4 @@ python rolling.py \
     \
     --encoder_hidden=128 \
     --decoder_hidden=256 \
-    \
-    --checkpoint=pack/10/2d-bot-C+P+S-lb-soft-width-5-note-sh-R-newdiff_resume2-2020-05-09-14-39/checkpoints/299/
+    # --checkpoint=pack/10/2d-bot-C+P+S-lb-soft-width-5-note-sh-R-newdiff_resume2-2020-05-09-14-39/checkpoints/299/

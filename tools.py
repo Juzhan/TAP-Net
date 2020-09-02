@@ -573,11 +573,12 @@ def draw_container_2d( blocks, positions, container_size, reward_type='"C+P+S-lb
         save_title='', save_name='./a' ):
 
     container_width = container_size[0]
-    if container_size[1] > 70:  container_height = 200
-    else:                       container_height = 25   # 15
+    is_large_image = container_size[1] > 50
+
+    if is_large_image:  container_height = 50
+    else:               container_height = 20   # 15
         
     blocks_num = len(blocks)
-
     # colors = calc_colors(blocks_num)
     
     if order is None:   order  = [i for i in range(blocks_num)]
@@ -587,8 +588,8 @@ def draw_container_2d( blocks, positions, container_size, reward_type='"C+P+S-lb
     place_order = []
     
     plt.close('all')
-    if container_height >= 200: fig = plt.figure(figsize=(5, 20))
-    else:                       fig = plt.figure()
+    if is_large_image: fig = plt.figure(figsize=(5, 20))
+    else:              fig = plt.figure()
     
     ax = fig.add_subplot(1,1,1, aspect='equal')
     plt.xlim(0,container_width)
@@ -596,8 +597,8 @@ def draw_container_2d( blocks, positions, container_size, reward_type='"C+P+S-lb
     plt.grid(True, alpha=0.6, lw=1 )
 
     for axis in ['top','bottom','left','right']:
-        if container_height >= 200: ax.spines[axis].set_linewidth(5)
-        else:                       ax.spines[axis].set_linewidth(2) # 1
+        if is_large_image: ax.spines[axis].set_linewidth(5)
+        else:              ax.spines[axis].set_linewidth(2) # 1
 
     ax.set_axisbelow(True)
     for tic in ax.xaxis.get_major_ticks():
@@ -632,7 +633,7 @@ def draw_container_2d( blocks, positions, container_size, reward_type='"C+P+S-lb
 
         # ax.add_patch(patches.Rectangle((x, y), w, h, facecolor=colors[order][block_i], edgecolor='#00225515', linestyle='-'))
         
-        if container_height >= 200: 
+        if is_large_image: 
             ax.add_patch(patches.Rectangle((x, y), w, h, facecolor=colors[order][block_i], edgecolor='black', 
                                                             linewidth=2, linestyle='-'))
             ax.text(x+w/2, y+h/2, str(labels[order][block_i]), ha='center', va='center', zorder=2000, fontsize=40)
@@ -645,7 +646,7 @@ def draw_container_2d( blocks, positions, container_size, reward_type='"C+P+S-lb
 
     for rotate_block in rotate_blocks:
         x, y, w, h, color = rotate_block
-        if container_height >= 200: 
+        if is_large_image: 
             lw = 2
             hatch = '\\'
             hatch_lw = 6
@@ -3513,6 +3514,7 @@ def calc_positions_net(blocks, container_size, reward_type):
         reward_type: string
             'C+P+S-SL-soft'
             'C+P+S-RL-soft'
+            'C+P+S-G-soft'
             'C+P+S-LG-soft'
             'C+P+S-LG-gt-soft'
     return:

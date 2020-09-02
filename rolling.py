@@ -17,7 +17,7 @@ import tools
 import generate
 # from model import DRL
 
-def get_dataset( blocks_num, train_size, valid_size, obj_dim, initial_container_width, initial_container_height, size_range, seed=None):
+def get_dataset( blocks_num, train_size, valid_size, obj_dim, initial_container_width, initial_container_height, arm_size, size_range, seed=None):
     blocks_num = int(blocks_num)
     if seed is None:
         seed = np.random.randint(123456789)
@@ -57,7 +57,7 @@ def get_dataset( blocks_num, train_size, valid_size, obj_dim, initial_container_
         rotate_deps_large_f = open(data_dir + 'dep_large.txt', 'w')
 
         for _ in tqdm(range(data_size)):
-            rotate_blocks, positions, deps_move, rotate_deps_small, rotate_deps_large = generate.generate_blocks(blocks_num, initial_container_size, size_range)
+            rotate_blocks, positions, deps_move, rotate_deps_small, rotate_deps_large = generate.generate_blocks(blocks_num, initial_container_size, arm_size, size_range)
 
             for blocks_index, blocks in enumerate(rotate_blocks):
                 blocks_f.writelines(arr2str( blocks ) )
@@ -709,6 +709,7 @@ def train_pack(args):
         args.obj_dim,
         args.initial_container_width,
         args.initial_container_height,
+        args.arm_size,
         size_range,
         seed=args.seed,
     )

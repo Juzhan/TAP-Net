@@ -255,17 +255,12 @@ class DRL(nn.Module):
         """
         Parameters
         ----------
-        static: Array of size (batch_size, feats, num_cities)
-            Defines the elements to consider as static. For the TSP, this could be
-            things like the (x, y) coordinates, which won't change
-        dynamic: Array of size (batch_size, feats, num_cities)
-            Defines the elements to consider as static. For the VRP, this can be
-            things like the (load, demand) of each city. If there are no dynamic
-            elements, this can be set to None
+        static: Array of size (batch_size, feats, blocks_num*dim!)
+            Defines the elements to consider as static
+        dynamic: Array of size (batch_size, feats, blocks_num*dim!)
+            Defines the elements to consider as dynamic
         decoder_input: Array of size (batch_size, num_feats)
-            Defines the outputs for the decoder. Currently, we just use the
-            static elements (e.g. (x, y) coordinates), but this can technically
-            be other things as well
+            Defines the outputs for the decoder
         last_hh: Array of size (batch_size, num_hidden)
             Defines the last hidden state for the RNN
         """
@@ -661,17 +656,12 @@ class DRL_RNN(nn.Module):
         """
         Parameters
         ----------
-        static: Array of size (batch_size, feats, num_cities)
-            Defines the elements to consider as static. For the TSP, this could be
-            things like the (x, y) coordinates, which won't change
-        dynamic: Array of size (batch_size, feats, num_cities)
-            Defines the elements to consider as static. For the VRP, this can be
-            things like the (load, demand) of each city. If there are no dynamic
-            elements, this can be set to None
+        static: Array of size (batch_size, feats, blocks_num*dim!)
+            Defines the elements to consider as static
+        dynamic: Array of size (batch_size, feats, blocks_num*dim!)
+            Defines the elements to consider as static
         decoder_input: Array of size (batch_size, num_feats)
-            Defines the outputs for the decoder. Currently, we just use the
-            static elements (e.g. (x, y) coordinates), but this can technically
-            be other things as well
+            Defines the outputs for the decoder
         last_hh: Array of size (batch_size, num_hidden)
             Defines the last hidden state for the RNN
         """
@@ -996,8 +986,7 @@ class DRL_L(nn.Module):
                     print('eval')
                     self.pack_net.eval()
             else:
-                print('=====> Error in DRL_one_step init pack')
-            print('one  step RL')
+                print('=====> Error in DRL_L init pack')
         else:
             print('SL')
             if heightmap_type == 'diff':
@@ -1028,17 +1017,12 @@ class DRL_L(nn.Module):
         """
         Parameters
         ----------
-        static: Array of size (batch_size, feats, num_cities)
-            Defines the elements to consider as static. For the TSP, this could be
-            things like the (x, y) coordinates, which won't change
-        dynamic: Array of size (batch_size, feats, num_cities)
-            Defines the elements to consider as static. For the VRP, this can be
-            things like the (load, demand) of each city. If there are no dynamic
-            elements, this can be set to None
+        static: Array of size (batch_size, feats, blocks_num*dim!)
+            Defines the elements to consider as static
+        dynamic: Array of size (batch_size, feats, blocks_num*dim!)
+            Defines the elements to consider as dynamic
         decoder_input: Array of size (batch_size, num_feats)
-            Defines the outputs for the decoder. Currently, we just use the
-            static elements (e.g. (x, y) coordinates), but this can technically
-            be other things as well
+            Defines the outputs for the decoder
         last_hh: Array of size (batch_size, num_hidden)
             Defines the last hidden state for the RNN
         """
