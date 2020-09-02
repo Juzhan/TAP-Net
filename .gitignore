@@ -8,3 +8,4 @@ compare/all_img/
 *.pdf
 *.txt
 *.pyc
+.vscode

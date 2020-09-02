@@ -1,3 +1,15 @@
+'''
+Local pack net trained using reinforcement learning
+
+You can set you training parameters in main function.
+
+if note == 'RL_rand' and heightmap_type == 'diff':
+    
+    The code will generate a folder named 'RL_rand_diff/', 
+    the training result and checkpoints will store unber this folder
+
+'''
+
 # -*- coding: utf-8 -*-
 import math
 import random
@@ -677,14 +689,14 @@ def train(actor, critic, train_size, valid_size, blocks_num, batch_size, epoch_n
     actor_optim = optim.Adam(actor.net.parameters(), lr=learning_rate)
     critic_optim = optim.Adam(critic.parameters(), lr=learning_rate)
 
-    if net_type == 'L_mix':
+    if net_type == 'RL_mix':
         train_data_file_1 = '../data/rand_2d/pack-train-%d-%d-7-1-5/' % (blocks_num, train_size)
         train_data_file_2 = '../data/gt_2d/pack-train-%d-128000-7-1-5/' % (blocks_num)
         train_data = PackDataset_mix( train_data_file_1, train_data_file_2, blocks_num, train_size )
-    elif net_type == 'L_gt':
+    elif net_type == 'RL_gt':
         train_data_file = './data/gt_2d/pack-train-%d-%d-5-1-5/' % (blocks_num, train_size)
         train_data = PackDataset( train_data_file, blocks_num, train_size )
-    elif net_type == 'L_rand':
+    elif net_type == 'RL_rand':
         train_data_file = '../data/rand_2d/pack-train-%d-%d-7-1-5/' % (blocks_num, train_size)
         train_data = PackDataset_rand( train_data_file, blocks_num, train_size )
 
@@ -870,7 +882,7 @@ if __name__ == '__main__':
 
     is_train = True
 
-    note = 'L_rand'
+    note = 'RL_rand'
 
     heightmap_type = 'diff'
 

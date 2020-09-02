@@ -1,3 +1,21 @@
+'''
+Global or Local+global pack net trained using reinforcement learning
+
+You can set you training parameters in main function.
+
+if note == 'LG_rand' and heightmap_type == 'diff':
+    The code will generate a folder named 'LG_rand_diff/', 
+    and train the local+global pack net,
+    the training result and checkpoints will store unber this folder
+
+if note == 'G_rand' and heightmap_type == 'diff':
+    The code will generate a folder named 'G_rand_diff/', 
+    and train the global pack net,
+    the training result and checkpoints will store unber this folder
+
+'''
+
+
 # -*- coding: utf-8 -*-
 import math
 import random
@@ -294,7 +312,13 @@ class PackDataset_rand(Dataset):
         ----
         params
         ----
-            
+            data_file: string, the dataset floder
+            blocks_num: int, the total number of blocks
+            data_size: int, the dataset size
+        returns
+        ----
+            gt_blocks: batch_size x 2 x blocks_num tensor
+            gt_positions: batch_size x 2 x blocks_num tensor
         '''
         super(PackDataset_rand, self).__init__()
 
@@ -539,7 +563,7 @@ class PackRNN(nn.Module):
 
     def __init__(self, block_input_size, block_hidden_size, height_input_size, height_hidden_size, container_width, container_height, heightmap_type, max_blocks_num=10, pack_net_type='LG'):
         super(PackRNN, self).__init__()        
-
+        print(pack_net_type)
         if pack_net_type == 'LG':
             # local + global
             decoder_hidden_size = block_hidden_size + block_hidden_size + height_hidden_size
@@ -933,7 +957,7 @@ if __name__ == '__main__':
  
     # note = 'G_rand'   # G_xxx for global pack net
     # note = 'LG_gt'    # LG_xx for local + global pack net
-    note = 'LG_rand'
+    note = 'G_rand'
     pack_net_type = note.split('_')[0]
 
     heightmap_type = 'diff'
@@ -970,10 +994,10 @@ if __name__ == '__main__':
         print('Loading pre-train model', path)
 
     if is_train:        
-        tarin_size = 64000
+        tarin_size = 1280
         valid_size = 100
         train(actor, critic, tarin_size, valid_size, blocks_num, batch_size, epoch_num, learning_rate, save_dir, use_cuda, note, is_train)
     else:
-        valid_size = 50
+        valid_size = 100
         valid(actor, valid_size, blocks_num, save_dir )
     

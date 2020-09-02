@@ -564,7 +564,7 @@ def draw_container_2d_old( blocks, positions, container_size, reward_type='comp'
     plt.savefig(save_name + '.png', bbox_inches='tight', dpi=400)
     plt.cla()
 
-def draw_container_2d( blocks, positions, container_size, reward_type='comp', 
+def draw_container_2d( blocks, positions, container_size, reward_type='"C+P+S-lb-soft"', 
         order=None, 
         stable=None, 
         feasibility=None,
@@ -3409,10 +3409,10 @@ def calc_one_position_net(blocks, block_index, positions, container, reward_type
     if net is None:
         if reward_type == 'C+P+S-SL-soft':
             net = DQN(container_width, True).cuda().eval()
-            net.load_state_dict(torch.load('./pack_net/L_SL_mcs_diff_False/checkpoints/199/DL.pt'))
+            net.load_state_dict(torch.load('./pack_net/SL_rand_diff/checkpoints/199/SL.pt'))
         elif reward_type == 'C+P+S-RL-soft':
             net = DQN(container_width, True).cuda().eval()
-            checkpoint = torch.load('./pack_net/L_RL_rand_diff/checkpoints/199/actor.pt')
+            checkpoint = torch.load('./pack_net/RL_rand_diff/checkpoints/199/actor.pt')
             net.load_state_dict(checkpoint)
 
 
@@ -3502,7 +3502,6 @@ def calc_positions_LG_net(blocks, container_size, reward_type):
     scores = [valid_size, box_size, empty_size, stable_num, packing_height]
     return positions[0], containers[0], stables[0], ratio, scores
 
-
 def calc_positions_net(blocks, container_size, reward_type):
     '''
     calculate the positions
@@ -3544,7 +3543,7 @@ def calc_positions_net(blocks, container_size, reward_type):
     
     if reward_type == 'C+P+S-SL-soft':
         net = DQN(container_size[0], True).cuda().eval()
-        net.load_state_dict(torch.load('./pack_net/DL_rand_mcs_diff_True/checkpoints/199/DL.pt'))
+        net.load_state_dict(torch.load('./pack_net/SL_rand_diff/checkpoints/199/SL.pt'))
         
     elif reward_type == 'C+P+S-RL-soft':
         net = DQN(container_size[0], True).cuda().eval()

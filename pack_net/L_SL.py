@@ -1,3 +1,15 @@
+'''
+Local pack net trained using supervised learning
+
+You can set you training parameters in main function.
+
+if note == 'SL_rand' and heightmap_type == 'diff':
+    
+    The code will generate a folder named 'SL_rand_diff/', 
+    the training result and checkpoints will store unber this folder
+
+'''
+
 # -*- coding: utf-8 -*-
 import math
 import random
@@ -72,8 +84,8 @@ class PackDataset(Dataset):
 
         gt_blocks = np.loadtxt(data_file + 'gt_blocks.txt').astype('float32')
         gt_positions = np.loadtxt(data_file + 'gt_pos.txt').astype('float32')
-        gt_height_map = np.loadtxt(data_file + 'lb_height_map.txt').astype('float32')
-        gt_pos_map = np.loadtxt(data_file + 'lb_pos_map.txt').astype('float32')
+        gt_height_map = np.loadtxt(data_file + 'mcs_height_map.txt').astype('float32')
+        gt_pos_map = np.loadtxt(data_file + 'mcs_pos_map.txt').astype('float32')
 
 
         gt_positions = torch.from_numpy(gt_positions)
@@ -166,8 +178,8 @@ class PackDataset_rand(Dataset):
         gt_blocks = torch.from_numpy( gt_blocks.astype('float32') ).transpose(2,1)
 
         # ============
-        gt_height_map = np.loadtxt(data_file + 'lb_height_map.txt').astype('float32')
-        gt_pos_map = np.loadtxt(data_file + 'lb_pos_map.txt').astype('float32')
+        gt_height_map = np.loadtxt(data_file + 'mcs_height_map.txt').astype('float32')
+        gt_pos_map = np.loadtxt(data_file + 'mcs_pos_map.txt').astype('float32')
 
         gt_height_map = torch.from_numpy(gt_height_map)
         gt_height_map = gt_height_map.view(data_size, -1)
@@ -196,7 +208,7 @@ class PackDataset_rand(Dataset):
         if heightmap_type == 'diff':
             for i in range(total_size):
                 tmp = gt_height_map[i].clone()[0]
-                tmp[:-1] = tmp[1:]
+                tmp[:-1] = gt_height_map[i].clone()[0][1:]
                 tmp[-1] = gt_height_map[i][0][-1]
 
                 gt_height_map[i] = tmp - gt_height_map[i]
@@ -237,8 +249,8 @@ def load_data_gt(data_file, blocks_num, data_size):
     gt_blocks = np.loadtxt(data_file + 'gt_blocks.txt').astype('float32')
     gt_positions = np.loadtxt(data_file + 'gt_pos.txt').astype('float32')
 
-    gt_height_map = np.loadtxt(data_file + 'lb_height_map.txt').astype('float32')
-    gt_pos_map = np.loadtxt(data_file + 'lb_pos_map.txt').astype('float32')
+    gt_height_map = np.loadtxt(data_file + 'mcs_height_map.txt').astype('float32')
+    gt_pos_map = np.loadtxt(data_file + 'mcs_pos_map.txt').astype('float32')
 
     gt_positions = torch.from_numpy(gt_positions)
     gt_positions = gt_positions.view(data_size, -1, blocks_num)
@@ -502,14 +514,10 @@ def calc_positions(net, blocks, container_size, save_dir, heightmap_type, is_tra
     for batch_index in range(batch_size):
         packing_height[batch_index] = height_maps[batch_index].max()
         stable_num[batch_index] = stables[batch_index].sum()
-        
-        # if batch_index < 3:
-        #     tools.draw_container_2d( blocks[batch_index], positions[batch_index], container_size, save_name='gt')
 
         # tools.draw_container_2d( blocks[batch_index], positions[batch_index], container_size, \
         #     save_title='C %.3f   S %.3f   P %.3f' % (C[batch_index], S[batch_index], P[batch_index]), \
         #         save_name='./img/gt_%d' % batch_index)
-        # break
     C = valid_size / box_size
     P = valid_size / (valid_size + empty_size)
     S = stable_num / blocks_num
@@ -550,7 +558,6 @@ def train(net, train_size, valid_size, blocks_num, heightmap_type, batch_size, e
         train_data = PackDataset_rand( train_data_file, blocks_num, train_size, heightmap_type )
         valid_data = PackDataset_rand( valid_data_file, blocks_num, valid_size, heightmap_type )
     else:
-
         train_data_file = './data/gt_2d/pack-train-%d-%d-5-1-5/' % (blocks_num, train_size)
         valid_data_file = './data/gt_2d/pack-valid-%d-%d-5-1-5/' % (blocks_num, valid_size)
         train_data = PackDataset( train_data_file, blocks_num, train_size, heightmap_type )
@@ -613,7 +620,7 @@ def train(net, train_size, valid_size, blocks_num, heightmap_type, batch_size, e
         if not os.path.exists(epoch_dir):
             os.makedirs(epoch_dir)
 
-        save_path = os.path.join(epoch_dir, 'DL.pt')
+        save_path = os.path.join(epoch_dir, 'SL.pt')
         torch.save(net.state_dict(), save_path)
 
         mean_loss = np.mean(total_losses)
@@ -635,7 +642,7 @@ def train(net, train_size, valid_size, blocks_num, heightmap_type, batch_size, e
 
         if mean_valid < best_loss:
             best_loss = mean_valid
-            save_path = os.path.join(save_dir, 'DL.pt')
+            save_path = os.path.join(save_dir, 'SL.pt')
             torch.save(net.state_dict(), save_path)
 
         print('Epoch %d,  mean epoch valid: %2.4f  | loss: %2.4f, took: %2.4fs '\
@@ -655,8 +662,8 @@ def train(net, train_size, valid_size, blocks_num, heightmap_type, batch_size, e
 
 def valid(actor, data_size, blocks_num, heightmap_type, checkpoint_path, use_cuda, save_dir):
     
-    blocks, _, _, _ = load_data_gt('./data/gt_2d/pack-valid-%d-%d-5-1-5/' % (blocks_num, data_size), blocks_num, data_size)
-    # blocks, _ = load_data_rand('../data/rand_2d/pack-valid-%d-%d-7-1-5/' % (blocks_num, data_size), blocks_num, data_size)
+    # blocks, _, _, _ = load_data_gt('./data/gt_2d/pack-valid-%d-%d-5-1-5/' % (blocks_num, data_size), blocks_num, data_size)
+    blocks, _ = load_data_rand('../data/rand_2d/pack-valid-%d-%d-7-1-5/' % (blocks_num, data_size), blocks_num, data_size)
 
     if use_cuda:
         blocks = blocks.cuda()
@@ -665,7 +672,7 @@ def valid(actor, data_size, blocks_num, heightmap_type, checkpoint_path, use_cud
         os.makedirs(save_dir + '/render')
 
 
-    path = os.path.join(checkpoint_path, 'DL.pt')
+    path = os.path.join(checkpoint_path, 'SL.pt')
     print(path)
     actor.load_state_dict(torch.load(path))
     print('load checkpoint file')
@@ -696,9 +703,6 @@ if __name__ == '__main__':
         print("....Using Gpu....")
         os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
-    tarin_size = 64000
-    valid_size = 100
-    
     batch_size = 256
     epoch_num = 200
     learning_rate = 5e-4
@@ -715,24 +719,24 @@ if __name__ == '__main__':
     else:
         is_diff_height = False
 
-    # note = 'DL_gt_%s' % heightmap_type
-    # note = 'DL_lb_%s' % heightmap_type
-    # note = 'DL_mcs_%s' % heightmap_type
-    note = 'DL_rand_lb_%s' % heightmap_type
+    # note = 'SL_gt'
+    # note = 'SL_lb'
+    # note = 'SL_mcs'
+    note = 'SL_rand'
 
-    save_dir = './%s_%s' % (note, is_diff_height)
+    save_dir = './%s_%s' % (note,  heightmap_type)
 
     pack_net = DQN(container_width, is_diff_height)
     if use_cuda:
         pack_net = pack_net.cuda()
 
     if is_train:
-        tarin_size = 64000
-        valid_size = 10
+        tarin_size = 1280
+        valid_size = 100
         train(pack_net, tarin_size, valid_size, blocks_num, heightmap_type, batch_size, epoch_num, learning_rate, save_dir, use_cuda, note)
     else:
         print('valid')
-        tarin_size = 10
+        tarin_size = 100
         valid_size = 10000
         checkpoint_dir = os.path.join(save_dir, 'checkpoints/199')
         valid(pack_net, valid_size, blocks_num, heightmap_type, checkpoint_dir, use_cuda, save_dir)
