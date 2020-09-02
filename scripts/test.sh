@@ -21,4 +21,4 @@ python trainer.py \
     --initial_container_width=7 \
     --initial_container_height=50 \
     \
-    --checkpoint=
+    --checkpoint=./p/2d-bot-C+P+S-lb-soft-width-5-note-sh-R-diff/
