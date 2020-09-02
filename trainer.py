@@ -548,7 +548,7 @@ if __name__ == '__main__':
     parser.add_argument('--input_type', default='bot', type=str)
     parser.add_argument('--allow_rot', default=True, type=str2bool)
     parser.add_argument('--decoder_input_type', default='shape_heightmap', type=str) # shape_heightmap, shape_only, heightmap_only
-    parser.add_argument('--heightmap_type', default='full', type=str)     # full, zero, diff
+    parser.add_argument('--heightmap_type', default='diff', type=str)     # full, zero, diff
     parser.add_argument('--no_precedence', default=False, type=str2bool)    # if true, set all deps to 0 
 
     # Network parameters

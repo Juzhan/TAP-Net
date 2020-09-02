@@ -11,9 +11,18 @@ Given an initial spatial configuration of boxes, we seek an efficient method to 
 
 For more details, please refer to our [paper]().
 
-![network](./doc/network.png)
+<!-- ![network](./doc/network.png) {width: 50%} -->
+<center>
+<img src="./doc/network.png" width="60%">
+</center>
+
 
 ### Usage
+
+All codes are tested under PyTorch 1.1.0 and Python 3.7 on Ubuntu 18.04.
+
+
+
 
 ### File structure:
 

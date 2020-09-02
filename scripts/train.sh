@@ -1,21 +1,15 @@
 python trainer.py \
+    --cuda=0 \
+    --note=training \
     \
-    --seed=12345 \
-    \
-    --task=generate \
-    --valid_size=10000 \
-    --train_size=64000 \
-    --epoch_num=1 \
+    --task=train \
+    --valid_size=10 \
+    --train_size=128000 \
+    --epoch_num=200 \
     --dataset=RAND \
     \
     --nodes=10 \
-    \
-    --input_type=bot \
-    --reward_type=C+P+S-lb-soft \
-    --packing_strategy=LB_GREEDY \
-    --allow_rot=True \
     --obj_dim=2 \
-    --layers=1 \
     \
     --unit=1 \
     --arm_size=1 \

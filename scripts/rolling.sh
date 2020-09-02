@@ -1,7 +1,7 @@
 python rolling.py \
     --use_cuda=True \
-    --cuda=2 \
-    --note=rolling_newdiff_50 \
+    --cuda=0 \
+    --note=rolling_test_50 \
     \
     --just_generate=False \
     --just_test=True \
