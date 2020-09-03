@@ -8,7 +8,7 @@
 We introduce the transport-and-pack(TAP) problem, a frequently encountered instance of real-world packing, and develop a neural optimization solution based on reinforcement learning. 
 Given an initial spatial configuration of boxes, we seek an efficient method to iteratively transport and pack the boxes compactly into a target container. Due to obstruction and accessibility constraints, our problem has to add a new search dimension, i.e., finding an optimal em transport sequence, to the already immense search space for packing alone. Using a learning-based approach, a trained network can learn and encode solution patterns to guide the solution of new problem instances instead of executing an expensive online search. In our work, we represent the transport constraints using a precedence graph and train a neural network, coined TAP-Net, using reinforcement learning to reward efficient and stable packing. 
 
-For more details, please refer to our [paper]().
+For more details and materials, please refer to our [project page](https://vcc.tech/research/2020/TAP).
 
 <!-- ![network](./doc/network.png) {width: 50%} -->
 <div align=center>
