@@ -211,13 +211,22 @@ The `data/` folder contain the training and testing data, the folder structure o
 
 Under these folders, we have many kinds for dataset, `pack-train-10-1280-7-1-5` means the training dataset with 1280 data, each data has 10 blocks, the initial container width is 7, the block size is from 1\~5. `pack-valid-6-100-5-1-4` means the testing dataset with 100 data, each data has 6 blocks, the initial container width is 5, the block size is from 1\~4. See [data.md](./doc/data.md) for more detial.
 
+### Citation
+Please cite the paper in your publications if it helps your research:
+```
+@article{TAPNet20,
+title = {TAP-Net: Transport-and-Pack using Reinforcement Learning},
+author = {Ruizhen Hu and Juzhan Xu and Bin Chen and Minglun Gong and Hao Zhang and Hui Huang},
+journal = {ACM Transactions on Graphics (Proceedings of SIGGRAPH ASIA 2020)},
+volume = {39},
+number = {6},
+pages = {232:1~232:15},
+year = {2020},
+}
+```
 ## License
 Our code is released under MIT License. See LICENSE file for details.
 
-<!-- ### Citation
-Please cite the paper in your publications if it helps your research:
-```
-``` -->
 
 ## Acknowledgements
 Thanks to [mveres01/pytorch-drl4vrp](https://github.com/mveres01/pytorch-drl4vrp) for getting the start of our code.
